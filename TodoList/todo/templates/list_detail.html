@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="list-title">
+    <h2>Todo List: {{ todo_list.name }}</h2>
+    <p id="date">{{ todo_list.date }}</p>
+</div>
+<form id='del-list' method="post" action="{% url 'delete_list' todo_list.id %}">
+                {% csrf_token %}
+                <img src="{% static 'assets/delete.png' %}" width="25" height="25" alt="Delete" onclick="this.parentElement.submit()">
+            </form>
+    <table class="task-table">  
+        <tr>
+            <th> </th>
+             <form method="post" action="{% if edit_task %}{% url 'edit_task' edit_task.id %}{% else %}{% url 'create_task' todo_list.id %}{% endif %}">
+                 {% csrf_token %}
+            <th class="add-task-form">
+                   <input type="text" id="title" name="title" placeholder="New Task title"  value="{{ edit_task.title|default:'' }}" required>
+                    <span class="task-desc">
+                   <input type="text" id="description" name="description" placeholder="New Task description" value="{{ edit_task.description|default:'' }}" required>
+                    </span>
+            </th>
+            <th>
+                   <button type="submit">{% if edit_task %}Update Task{% else %}Add Task{% endif %}</button>
+               </form>
+
+            </th>
+            <th> </th>
+        </tr>
+        {% for task in tasks %}
+        <tr>
+            <td>
+            <form method="post" action="{% url 'toggle_task' task.id %}">
+                {% csrf_token %}
+                <input type="checkbox" onchange="this.form.submit()" {% if task.completed %} checked {% endif %}>
+            </form>
+            </td>
+            <td colspan="2"> 
+                {% if task.completed %}
+                    <s>{{ task.title }}</s>
+                {% else %}
+                    {{ task.title }}
+                {% endif %}
+                <br>
+                <span class="task-desc">
+                {% if task.completed %}
+                    <s>{{ task.description }}</s>
+                {% else %}
+                    {{ task.description }}
+                {% endif %}
+                </span>
+            </td>
+            <td class="task-actions">
+               <div class="task-actions-inner">
+                    <a href="?edit={{ task.id }}"><img src="{% static 'assets/edit.png' %}" width="20" height="20" alt="Edit"></a>
+                 <form method="post" action="{% url 'delete_task' task.id %}">
+                    {% csrf_token %}
+                    <img id="delete-icon" src="{% static 'assets/erase.png' %}" width="20" height="20" alt="Delete" onclick="this.parentElement.submit()">
+                </form>
+            </div>
+            </td>
+        </tr>
+        {% empty %}
+            <td>No tasks in this list.</td>
+        {% endfor %}
+    </table>
+  
+{% endblock %}

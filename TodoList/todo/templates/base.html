@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Tagesschrift&display=swap" rel="stylesheet">
+    <script src="{% static 'js/scripts.js' %}" defer></script>
+
+</head>
+<body>
+    <div class="container">
+    <header>
+        <h1>Todo Application</h1>
+        <h2>{{ user.username }}'s Todo Lists</h2>
+        <nav>
+            <a href="{% url 'index' %}"><div class="nav-item"><img src="{% static 'assets/lists.png' %}" width="20" height="20" alt="Lists"><span>Lists</span></div></a>
+            <a href="{% url 'create_list' %}"><div class="nav-item"><img src="{% static 'assets/new-list.png' %}" width="20" height="20" alt="New list"><span>New list</span></div></a>
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        <!-- Content will be injected here -->
+        {% endblock %}
+    </main>
+    {% if user.is_authenticated %}
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-button">Logout</button>
+        </form>
+        {% endif %}
+    </div>
+    <footer>
+        <p>&copy; 2025 Todo App by Aminetou TEKROUR</p>
+    </footer>
+    
+</body>
+</html>

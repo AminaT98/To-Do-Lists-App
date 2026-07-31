@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <h2>Create a New Todo List</h2>
+    <form method="post" action="{% url 'create_list' %}">
+        {% csrf_token %}
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date">
+        <label for="name">List Name:</label>
+        <input type="text" id="name" name="name">
+        
+        <button type="submit">Create List</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+    <h2>Welcome to the Todo Application</h2>
+    <p>Manage your tasks efficiently and stay organized!</p>
+  
+    <table>
+        <tr>
+            <th>Date</th>
+            <th id="delete-col">Name</th>
+            <th></th>
+        </tr>
+         {% for list in lists %}
+        <tr>
+            <td>{{ list.date }}</td>
+            <td id="delete-col"><a href="{% url 'list_detail' list.id %}">{{ list.name }}</a></td>
+            <td><form method="post" action="{% url 'delete_list' list.id %}">
+                {% csrf_token %}
+                <img id="delete-icon" src="{% static 'assets/delete.png' %}" alt="Delete" onclick="this.parentElement.submit()">
+            </form></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
