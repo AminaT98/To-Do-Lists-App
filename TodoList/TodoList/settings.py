@@ -29,6 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
+    "https://to-do-lists-app-5.onrender.com",
 ]
 
 
